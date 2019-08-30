@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+    <h1>Home</h1>
+
+    <div sec:authorize="!isAuthenticated()">
+        <form method="get" action="/login">
+            <button type="submit">Log in</button>
+        </form>
+        <form method="get" action="/register">
+            <button type="submit">Sign up</button>
+        </form>
+    </div>
+
+    <div sec:authorize="isAuthenticated()">
+        <div th:inline="text">
+            Logged in as [[${#httpServletRequest.remoteUser}]].
+        </div>
+
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Log out" />
+        </form>
+    </div>
 
 </body>
 </html>
